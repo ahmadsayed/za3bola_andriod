@@ -65,10 +65,14 @@ public abstract class RobotBehavior implements Runnable, OnClickListener {
 
 
 
-	public  RobotBehavior() {
-		setup();		
-	}
+	
 
+	public  RobotBehavior() {
+	}
+	
+	public void init() {
+		setup();
+	}
 	
 	
 	@Override

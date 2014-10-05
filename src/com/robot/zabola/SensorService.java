@@ -238,7 +238,7 @@ public class SensorService implements SensorEventListener {
 		float oneMinusCoeff = 1.0f - FILTER_COEFFICIENT;
 
 		/*
-		 * Fix for 179� <--> -179� transition problem: Check whether one of
+		 * Fix for 179 <--> -179 transition problem: Check whether one of
 		 * the two orientation angles (gyro or accMag) is negative while the
 		 * other one is positive. If so, add 360� (2 * math.PI) to the
 		 * negative value, perform the sensor fusion, and remove the 360�
@@ -287,14 +287,14 @@ public class SensorService implements SensorEventListener {
 	}
 	
 	public float getAzimuth() {
-		return orientation[0];
+		return orientation[0] * (180f/2f);
 	}
 	public float getPitch() {
-		return orientation[1];
+		return orientation[1]* (180f/2f);
 	}
 
 	public float getRoll() {
-		return orientation[2];
+		return orientation[2] * (180f/2f);
 	}
 
 

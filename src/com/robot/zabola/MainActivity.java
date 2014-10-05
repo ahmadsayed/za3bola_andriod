@@ -17,13 +17,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.robot.zabola.behavior.Calibration;
 import com.robot.zabola.behavior.MoveForwared;
+import com.robot.zabola.constant.Constant;
 import com.test.ledonoff.R;
 
 public class MainActivity extends Activity {
 	private SensorManager mSensorManager = null;
 	public Handler mHandler;
-	public static final int TIME_CONSTANT = 30;
+	public static final int TIME_CONSTANT = 10;
 	SensorService sensorService;
 
 	private Timer fuseTimer = new Timer();
@@ -39,7 +41,7 @@ public class MainActivity extends Activity {
 	private BluetoothService mChatService = null;
 
 	// Insert your server's MAC address
-	private static String address = "00:14:03:18:22:15";
+	private static String address = Constant.ADDRESS;
 	int direction = 0;
 	HashMap<String, Byte> sensorDataHandler = new HashMap<String, Byte>();
 
@@ -62,6 +64,7 @@ public class MainActivity extends Activity {
 		robotBehavior = new MoveForwared();
 		robotBehavior.setState(state);
 		robotBehavior.setSensorService(sensorService);
+		robotBehavior.init();
 		Log.d(TAG, "In onCreate()");
 		mSensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
 		initListeners();
@@ -81,7 +84,7 @@ public class MainActivity extends Activity {
 		lcd4 = (TextView) findViewById(R.id.lcd4);
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		// If the adapter is null, then Bluetooth is not supported
-		fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(), 100, TIME_CONSTANT);
+		fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(), 0, TIME_CONSTANT);
 
 		if (mBluetoothAdapter == null) {
 			Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
@@ -219,7 +222,15 @@ public class MainActivity extends Activity {
 
 		public void run() {
 			// update sensor output in GUI\
-			mHandler.post(robotBehavior);			
+			mHandler.post(robotBehavior);
+			mHandler.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					sensorService.begin();
+					
+				}
+			});
 			mHandler.post(new Runnable() {				
 				@Override
 				public void run() {
