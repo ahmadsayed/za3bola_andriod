@@ -64,10 +64,20 @@ public class MainActivity extends Activity {
 		robotBehavior = new MoveForwared();
 		robotBehavior.setState(state);
 		robotBehavior.setSensorService(sensorService);
-		robotBehavior.init();
-		Log.d(TAG, "In onCreate()");
 		mSensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
 		initListeners();
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		// If the adapter is null, then Bluetooth is not supported
+		fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(), 0, TIME_CONSTANT);
+
+		if (mBluetoothAdapter == null) {
+			Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+
+		robotBehavior.init();
+		Log.d(TAG, "In onCreate()");
 		setContentView(R.layout.activity_main);
 
 		b1 = (Button) findViewById(R.id.b1);
@@ -82,15 +92,6 @@ public class MainActivity extends Activity {
 		lcd2 = (TextView) findViewById(R.id.lcd2);
 		lcd3 = (TextView) findViewById(R.id.lcd3);
 		lcd4 = (TextView) findViewById(R.id.lcd4);
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		// If the adapter is null, then Bluetooth is not supported
-		fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(), 0, TIME_CONSTANT);
-
-		if (mBluetoothAdapter == null) {
-			Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-			finish();
-			return;
-		}
 
 		b1.setOnClickListener(robotBehavior);
 		b2.setOnClickListener(robotBehavior);

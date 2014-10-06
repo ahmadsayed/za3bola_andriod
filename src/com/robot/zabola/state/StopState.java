@@ -3,7 +3,10 @@ package com.robot.zabola.state;
 import java.util.Date;
 
 public class StopState extends Timestate{
-
+	public StopState(long duration) {
+		super(duration);
+	}
+	
 	public StopState(long duration, Statelike nextState) {
 		super(duration, nextState);
 	}
@@ -13,7 +16,9 @@ public class StopState extends Timestate{
 		setWheelA(wheelB = 0);
 		if ((new Date().getTime() - stateContext.getTimestamp().getTime()) >= duration) {
 			stateContext.setTimestamp(new Date());
-			stateContext.setState(getNextState());
+			if (getNextState() != null) {
+				stateContext.setState(getNextState());
+			}
 		}
 	}
 

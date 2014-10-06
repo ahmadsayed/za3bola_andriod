@@ -1,9 +1,20 @@
 package com.robot.zabola.state;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class StateContext {
+	private HashMap<String, String> otherData = new HashMap<String, String>();
 	
+	public HashMap<String, String> getOtherData() {
+		return otherData;
+	}
+
+
+	public void setOtherData(HashMap<String, String> otherData) {
+		this.otherData = otherData;
+	}
+
 	private Date timestamp = new Date(); 
 	
 	private Statelike myState;
@@ -32,7 +43,9 @@ public class StateContext {
 	}
     
 	public void update() {
-		myState.update(this);
+		if (myState != null) {
+			myState.update(this);
+		}
 	}
 	
 	public DifferentialRobotState getDifferentialRobotState() {
