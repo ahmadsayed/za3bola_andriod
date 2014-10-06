@@ -8,7 +8,7 @@ public class StateContext {
 	
 	private Statelike myState;
     
-    public StateContext () {    	
+    public StateContext () {
     }
     
     public StateContext(Statelike state) {    	
