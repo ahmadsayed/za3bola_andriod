@@ -11,6 +11,7 @@ public class StateContext {
     public StateContext () {
     }
     
+    
     public StateContext(Statelike state) {    	
     	setState(state);
     }
