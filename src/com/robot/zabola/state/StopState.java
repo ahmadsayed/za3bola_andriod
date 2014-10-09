@@ -1,6 +1,5 @@
 package com.robot.zabola.state;
 
-import java.util.Date;
 
 public class StopState extends Timestate{
 	public StopState(long duration) {
@@ -14,12 +13,7 @@ public class StopState extends Timestate{
 	@Override
 	public void update(StateContext stateContext) {
 		setWheelA(wheelB = 0);
-		if ((new Date().getTime() - stateContext.getTimestamp().getTime()) >= duration) {
-			stateContext.setTimestamp(new Date());
-			if (getNextState() != null) {
-				stateContext.setState(getNextState());
-			}
-		}
+		super.update(stateContext);
 	}
 
 }

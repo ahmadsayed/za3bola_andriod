@@ -1,6 +1,7 @@
 package com.robot.zabola.behavior;
 
-import com.robot.zabola.state.MoveState;
+import com.robot.zabola.state.RotateLeftState;
+import com.robot.zabola.state.RotateRightState;
 import com.robot.zabola.state.StateContext;
 import com.robot.zabola.state.Statelike;
 import com.robot.zabola.state.StopState;
@@ -12,11 +13,11 @@ public class MoveForwared extends RobotBehavior {
 	@Override
 	public void setup() {
 		sensorService.begin();		
-		move = new MoveState(2000l);
-		stop = new StopState(100l, move);
+		move = new RotateLeftState(500l);
+		stop = new RotateRightState(500l, move);
 		endOperation = new StopState(1000l);
 		
-		((MoveState)move).setNextState(stop);
+		((RotateLeftState)move).setNextState(stop);
 		stateContext = new StateContext();
 		
 	}
