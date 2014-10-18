@@ -9,15 +9,14 @@ import com.robot.zabola.state.StopState;
 
 public class MoveForwared extends RobotBehavior {
 	StateContext stateContext;
-	Statelike move, stop, endOperation;
+	Statelike left, right, endOperation;
 	@Override
 	public void setup() {
 		sensorService.begin();		
-		move = new RotateLeftState(500l);
-		stop = new RotateRightState(500l, move);
-		endOperation = new StopState(1000l);
-		
-		((RotateLeftState)move).setNextState(stop);
+		left = new RotateLeftState(1000l);
+		right = new RotateRightState(1000l, left);
+		endOperation = new StopState(1000l);		
+		((RotateLeftState)left).setNextState(right);
 		stateContext = new StateContext();
 		
 	}
@@ -25,8 +24,6 @@ public class MoveForwared extends RobotBehavior {
 	@Override
 	public void loop() {
 		stateContext.update();
-		lcd1 = String.valueOf(sensorService.getAzimuth());
-		lcd2 = stateContext.getOtherData().get("AZIMUTH");
 		if (stateContext.getDifferentialRobotState() != null) {
 			int wheelA = stateContext.getDifferentialRobotState().getWheelA();
 			int wheelB = stateContext.getDifferentialRobotState().getWheelB();
@@ -38,15 +35,11 @@ public class MoveForwared extends RobotBehavior {
 	
 	@Override
 	public void button1() {
-		stateContext.setState(stop);
+		stateContext.setState(left);
 	}
 	@Override	
 	public void button2() {
 		stateContext.setState(endOperation);
-	}
-	@Override
-	public void button3() {
-		stateContext.getOtherData().put("AZIMUTH", String.valueOf(sensorService.getAzimuth()));
 	}
 	
 }
